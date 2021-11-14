@@ -6,37 +6,12 @@ import EstablishConnection as EstC
 clients_dict = dict
 
 
-def socket_is_valid(client_socket):
-    if client_socket != -1 and client_socket is not None:
-        return True
+def handle_client(clients_iterable):
+    client_tuple: tuple = EstC.socket_accept(server_socket)
+    check_client_validity_and_then_process_it(client_tuple)
 
-
-def send_back_digested_msg_and_close_connection(ready_client_socket) -> int:
-    if socket_is_valid(ready_client_socket):
-        Soc.digest_client_request_and_send_back(ready_client_socket)
-        Soc.close_connection_and_del_client_elem(ready_client_socket, clients_dict)
-        
-        return 0
-    else:
-        # no client ready after select
-        return 1
-
-# only checks readability
-def get_ready_client_socket(client_tuple: tuple):
-    Soc.fill_client_waiting_list(client_tuple, clients_dict)
-    # only checking for readability
-    ready_client_socket = Soc.select_client_socket(clients_dict)
-    
-    return ready_client_socket
-        
-
-def tuple_is_valid_client_tuple(client_tuple: tuple) -> bool:
-    if client_tuple == ():
-        return False
-    if client_tuple[0] == -1:
-        return False
-    
-    return True
+    if client_tuple in clients_iterable:
+        EstC.socket_close(client_tuple[0])
 
 
 def check_client_validity_and_then_process_it(client_tuple: tuple):
@@ -45,15 +20,37 @@ def check_client_validity_and_then_process_it(client_tuple: tuple):
         send_back_digested_msg_and_close_connection(ready_client_socket)
 
 
-def handle_client(clients_dict: dict):
-    """accepts a client, waits for data, digests that data
-    and responds to the client with the digest.
-    Then it closes the client connection again"""
-    client_tuple: tuple = EstC.socket_accept(server_socket)
-    check_client_validity_and_then_process_it(client_tuple)
+def tuple_is_valid_client_tuple(client_tuple: tuple) -> bool:
+    if client_tuple == ():
+        return False
+    if client_tuple[0] == -1:
+        return False
 
-    if client_tuple in clients_dict:
-        EstC.socket_close(client_tuple[0])
+    return True
+
+
+def get_ready_client_socket(client_tuple: tuple):
+    fill_client_waiting_list(client_tuple, clients_dict)
+    # only checking for readability
+    ready_client_socket = Soc.select_client_socket(clients_dict)
+
+    return ready_client_socket
+        
+
+def fill_client_waiting_list(client_tuple: tuple, client_connections: dict):
+    client_connections["sockets"].append(client_tuple[0])
+    client_connections["addresses"].append(client_tuple[1])
+
+
+def send_back_digested_msg_and_close_connection(ready_client_socket):
+    if socket_is_valid(ready_client_socket):
+        Soc.digest_client_request_and_send_back(ready_client_socket)
+        Soc.close_connection_and_del_client_elem(ready_client_socket, clients_dict)
+
+
+def socket_is_valid(client_socket):
+    if client_socket != -1 and client_socket is not None:
+        return True
 
 
 if __name__ == "__main__":
@@ -61,11 +58,10 @@ if __name__ == "__main__":
         server_socket = EstC.socket_create_bind_and_listen()
         server_socket.setblocking(False)
 
-        clients_dict = Soc.clients
+        clients_dict = {"sockets": [], "addresses": []}
 
         while True:
             handle_client(clients_dict)
 
-        EstC.socket_close(server_socket)
     except KeyboardInterrupt:
         exit(0)

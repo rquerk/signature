@@ -1,7 +1,7 @@
 import socket
 import sys
 
-from kindaTrash import service
+from backup.kindaTrash import service
 
 
 host = "localhost"

@@ -9,23 +9,14 @@ from sending import send_bytes_to_socket
 from sending import receive_bytes_from_socket
 from sending import close_bytes
 
-clients: dict = {"sockets": [], "addresses": []}
 
-
-def _select_read_or_write(socs: dict, rd_wr: str) -> list:
-    """Call of select() method. If mode is changed to 'wr',
-    select looks for writable file descriptors"""
-    if rd_wr == "rd":
-        client_sockets_rd = select.select(socs["sockets"], [], [])
-        return client_sockets_rd[0]
-    elif rd_wr == "wr":
-        client_sockets_wr = select.select([], socs["sockets"], [])
-        return client_sockets_wr[1]
-
-
-def _try_to_select_socket_and_pop_it(cl_soc: socket, mode) -> socket:
-    """Taking last client in the list"""
-    return _select_read_or_write(cl_soc, mode).pop()
+def select_client_socket(client_sockets: dict, mode: str = "rd"):
+    """Head function for select() call, handling the case, that
+    no exception was raised nor a value was returned"""
+    try:
+        return _select_client_socket(client_sockets, mode)
+    except Exc.SelectException as se:
+        Exc.print_exception_str(se)
 
 
 def _select_client_socket(client_sockets: dict, mode: str) -> socket:
@@ -46,19 +37,20 @@ def _select_client_socket(client_sockets: dict, mode: str) -> socket:
     raise Exc.SelectException
 
 
-def select_client_socket(client_sockets: dict, mode: str = "rd"):
-    """Head function for select() call, handling the case, that
-    no exception was raised nor a value was returned"""
-    try:
-        return _select_client_socket(client_sockets, mode)
-    except Exc.SelectException as se:
-        Exc.print_exception_str(se)
+def _try_to_select_socket_and_pop_it(cl_soc: socket, mode) -> socket:
+    """Taking last client in the list"""
+    return _select_read_or_write(cl_soc, mode).pop()
 
 
-def _send_digested(soc: socket, msg: bytes):
-    """first sending the message then sending the closing bytes"""
-    send_bytes_to_socket(soc, cryptic.digest(msg))
-    send_bytes_to_socket(soc, close_bytes)
+def _select_read_or_write(socs: dict, rd_wr: str) -> list:
+    """Call of select() method. If mode is changed to 'wr',
+    select looks for writable file descriptors"""
+    if rd_wr == "rd":
+        client_sockets_rd = select.select(socs["sockets"], [], [])
+        return client_sockets_rd[0]
+    elif rd_wr == "wr":
+        client_sockets_wr = select.select([], socs["sockets"], [])
+        return client_sockets_wr[1]
 
 
 def digest_client_request_and_send_back(ready_client: socket) -> socket:
@@ -70,21 +62,10 @@ def digest_client_request_and_send_back(ready_client: socket) -> socket:
     return ready_client
 
 
-def _del_all_client_info(soc: socket, client_list: dict):
-    """Calls the pop() method to delete elements in the lists of the client dict."""
-    list_index = client_list["sockets"].index(soc)
-    client_list["sockets"].pop(list_index)
-    client_list["addresses"].pop(list_index)
-
-
-def _del_client_elem(soc: socket, client_list: dict):
-    """Catching exceptions of the _del_all_info function"""
-    try:
-        _del_all_client_info(soc, client_list)
-    except IndexError as ie:
-        Exc.handle_exception_and_exit(ie, 6000)
-    except ValueError as ve:
-        Exc.handle_exception_and_exit(ve, 6001)
+def _send_digested(soc: socket, msg: bytes):
+    """first sending the message then sending the closing bytes"""
+    send_bytes_to_socket(soc, cryptic.digest(msg))
+    send_bytes_to_socket(soc, close_bytes)
 
 
 def close_connection_and_del_client_elem(soc: socket, client_list: dict):
@@ -97,7 +78,21 @@ def close_connection_and_del_client_elem(soc: socket, client_list: dict):
         Exc.handle_exception_and_exit(e, 700)
 
 
-def fill_client_waiting_list(client_tuple: tuple, client_connections: dict):
-    """saves client address and sockets file descriptor"""
-    client_connections["sockets"].append(client_tuple[0])
-    client_connections["addresses"].append(client_tuple[1])
+def _del_client_elem(soc: socket, client_list: dict):
+    """Catching exceptions of the _del_all_info function"""
+    try:
+        _del_all_client_info(soc, client_list)
+    except IndexError as ie:
+        Exc.handle_exception_and_exit(ie, 6000)
+    except ValueError as ve:
+        Exc.handle_exception_and_exit(ve, 6001)
+
+
+def _del_all_client_info(soc: socket, client_list: dict):
+    """Calls the pop() method to delete elements in the lists of the client dict."""
+    list_index = client_list["sockets"].index(soc)
+    client_list["sockets"].pop(list_index)
+    client_list["addresses"].pop(list_index)
+
+
+
