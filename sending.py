@@ -30,11 +30,16 @@ def receive_bytes_from_socket(c_socket: socket) -> bytes:
     request: bytearray = bytearray(b"")
     while bytes_received < message_length:
         client_data: bytes = c_socket.recv(buffer_size)
-        if not client_data:
-            break
+        if not client_data or client_data == b"":
+            return b""  # or break?
         bytes_received += len(client_data)
         request.extend(client_data)
-        if client_data[-len(close_bytes):] == close_bytes:
+        if received_closing_bytes(client_data):
             request = request[:-len(close_bytes)]
             break
     return bytes(request)
+
+
+def received_closing_bytes(received_bytes: bytes) -> bool:
+    if received_bytes[-len(close_bytes):] == close_bytes:
+        return True

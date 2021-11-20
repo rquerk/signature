@@ -39,7 +39,9 @@ def _select_client_socket(client_sockets: dict, mode: str) -> socket:
 
 def _try_to_select_socket_and_pop_it(cl_soc: socket, mode) -> socket:
     """Taking last client in the list"""
-    return _select_read_or_write(cl_soc, mode).pop()
+    selected_sockets: list = _select_read_or_write(cl_soc, mode)
+    if len(selected_sockets) > 0:
+        return selected_sockets.pop()
 
 
 def _select_read_or_write(socs: dict, rd_wr: str) -> list:
@@ -53,13 +55,11 @@ def _select_read_or_write(socs: dict, rd_wr: str) -> list:
         return client_sockets_wr[1]
 
 
-def digest_client_request_and_send_back(ready_client: socket) -> socket:
+def digest_client_request_and_send_back(ready_client: socket):
     """receive some data, digest it and send it back"""
     client_request: bytes = receive_bytes_from_socket(ready_client)
     if client_request != b"":
         _send_digested(ready_client, client_request)
-
-    return ready_client
 
 
 def _send_digested(soc: socket, msg: bytes):
@@ -95,4 +95,5 @@ def _del_all_client_info(soc: socket, client_list: dict):
     client_list["addresses"].pop(list_index)
 
 
+# def receive_client_request_and_save
 
