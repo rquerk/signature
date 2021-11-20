@@ -48,10 +48,10 @@ def _select_read_or_write(socs: dict, rd_wr: str) -> list:
     """Call of select() method. If mode is changed to 'wr',
     select looks for writable file descriptors"""
     if rd_wr == "rd":
-        client_sockets_rd = select.select(socs["sockets"], [], [])
+        client_sockets_rd = select.select(socs["sockets"], [], [], 0)
         return client_sockets_rd[0]
     elif rd_wr == "wr":
-        client_sockets_wr = select.select([], socs["sockets"], [])
+        client_sockets_wr = select.select([], socs["sockets"], [], 0)
         return client_sockets_wr[1]
 
 

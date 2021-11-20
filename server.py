@@ -8,19 +8,22 @@ clients_dict = dict
 
 def handle_client(clients_iterable):
     client_tuple: tuple = EstC.socket_accept(server_socket)
-    check_client_validity_and_then_process_it(client_tuple)
+
+    if is_valid(client_tuple):
+        fill_client_waiting_list(client_tuple, clients_dict)
+
+    process_client()
 
     if client_tuple in clients_iterable:
         EstC.socket_close(client_tuple[0])
 
 
-def check_client_validity_and_then_process_it(client_tuple: tuple):
-    if tuple_is_valid_client_tuple(client_tuple):
-        ready_client_socket = get_ready_client_socket(client_tuple)
-        send_back_digested_msg_and_close_connection(ready_client_socket)
+def process_client():
+    ready_client_socket = get_ready_client_socket()
+    send_back_digested_msg_and_close_connection(ready_client_socket)
 
 
-def tuple_is_valid_client_tuple(client_tuple: tuple) -> bool:
+def is_valid(client_tuple: tuple) -> bool:
     if client_tuple == ():
         return False
     if client_tuple[0] == -1:
@@ -29,8 +32,7 @@ def tuple_is_valid_client_tuple(client_tuple: tuple) -> bool:
     return True
 
 
-def get_ready_client_socket(client_tuple: tuple):
-    fill_client_waiting_list(client_tuple, clients_dict)
+def get_ready_client_socket():
     # only checking for readability
     ready_client_socket = Soc.select_client_socket(clients_dict)
 
