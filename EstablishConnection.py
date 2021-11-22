@@ -36,7 +36,7 @@ def socket_bind(s_socket: socket, host: str, port: int):
 
 
 def socket_listen(s_socket: socket):
-    """Just calls the listen() method."""
+    """Calls listen method with a given queue size"""
     s_socket.listen(connection_queue_size)
 
 

@@ -93,7 +93,3 @@ def _del_all_client_info(soc: socket, client_list: dict):
     list_index = client_list["sockets"].index(soc)
     client_list["sockets"].pop(list_index)
     client_list["addresses"].pop(list_index)
-
-
-# def receive_client_request_and_save
-
