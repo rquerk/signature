@@ -1,3 +1,5 @@
+"""Module to establish a TCP socket connection"""
+
 import socket
 import ExceptionHandling as Exc
 from ExceptionHandling import handle_exception_and_exit

@@ -1,4 +1,4 @@
-"""This is a helper module for sending and receiving bytes over sockets"""
+"""The module which implements the communication protocol"""
 
 import cryptic
 import select
@@ -8,6 +8,8 @@ from EstablishConnection import socket_close
 from sending import send_bytes_to_socket
 from sending import receive_bytes_from_socket
 from sending import close_bytes
+
+# TODO: separate select functions from
 
 
 def select_client_socket(client_sockets: dict, mode: str = "rd"):

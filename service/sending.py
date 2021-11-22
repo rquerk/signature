@@ -1,3 +1,5 @@
+"""This is a helper module for sending and receiving bytes over sockets"""
+
 import socket
 import ExceptionHandling as Exc
 
