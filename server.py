@@ -18,11 +18,6 @@ def handle_client(clients_iterable):
         EstC.socket_close(client_tuple[0])
 
 
-def process_client():
-    ready_client_socket = get_ready_client_socket()
-    send_back_digested_msg_and_close_connection(ready_client_socket)
-
-
 def is_valid(client_tuple: tuple) -> bool:
     if client_tuple == ():
         return False
@@ -30,6 +25,11 @@ def is_valid(client_tuple: tuple) -> bool:
         return False
 
     return True
+
+
+def process_client():
+    ready_client_socket = get_ready_client_socket()
+    send_back_digested_msg_and_close_connection(ready_client_socket)
 
 
 def get_ready_client_socket():
