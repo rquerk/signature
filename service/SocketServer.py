@@ -1,10 +1,7 @@
 """The module which implements the communication protocol"""
 
-import select
-
-from socket_wrapper import SocketWrap
 import ExceptionHandling as Exc
-
+from socket_wrapper import SocketWrap
 from socket_wrapper import ClientSocketWrap
 from EstablishConnection import socket_close
 from sending import send_bytes_to_socket

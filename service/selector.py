@@ -1,3 +1,5 @@
+"""Module to handle the select call"""
+
 import select
 import ExceptionHandling as Exc
 from socket_wrapper import SocketWrap
