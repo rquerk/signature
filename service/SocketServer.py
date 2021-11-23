@@ -2,15 +2,16 @@
 
 import ExceptionHandling as Exc
 from socket_wrapper import SocketWrap
-from socket_wrapper import ClientSocketWrap
-from EstablishConnection import socket_close
-from sending import send_bytes_to_socket
+
 from sending import receive_bytes_from_socket
+from sending import send_bytes_to_socket
 from sending import close_bytes
 import cryptic
 
+from EstablishConnection import socket_close
 
-def digest_client_request_and_send_back(ready_client: ClientSocketWrap):
+
+def digest_client_request_and_send_back(ready_client: SocketWrap):
     """receive some data, digest it and send it back"""
     client_request: bytes = receive_bytes_from_socket(ready_client)
     if client_request != b"":
