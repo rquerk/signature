@@ -1,7 +1,7 @@
 """This is a helper module for sending and receiving bytes over sockets"""
 
-import socket
 import ExceptionHandling as Exc
+from socket import socket
 
 buffer_size: int = 512
 message_length: int = 1024

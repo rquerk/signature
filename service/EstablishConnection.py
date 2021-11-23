@@ -12,7 +12,7 @@ PORT: int = 5421
 connection_queue_size: int = 2
 
 
-def socket_create_bind_and_listen() -> socket:
+def socket_create_bind_and_listen() -> socket.socket:
     """Function to return a listening socket, called on Server side"""
     server_socket = socket_create()
     socket_bind(server_socket, HOST, PORT)
@@ -20,7 +20,7 @@ def socket_create_bind_and_listen() -> socket:
     return server_socket
 
 
-def socket_create() -> socket:
+def socket_create() -> socket.socket:
     """This function calls the socket() and setsockopt() methods;
         socket is set to be reusable.
         """
@@ -29,7 +29,7 @@ def socket_create() -> socket:
     return socket_fd
 
 
-def socket_bind(s_socket: socket, host: str, port: int):
+def socket_bind(s_socket: socket.socket, host: str, port: int):
     """Call of bind() and its OSError catching."""
     try:
         s_socket.bind((host, port))
@@ -37,12 +37,12 @@ def socket_bind(s_socket: socket, host: str, port: int):
         handle_exception_and_exit(ose, 2000)
 
 
-def socket_listen(s_socket: socket):
+def socket_listen(s_socket: socket.socket):
     """Calls listen method with a given queue size"""
     s_socket.listen(connection_queue_size)
 
 
-def socket_create_and_connect() -> socket:
+def socket_create_and_connect() -> socket.socket:
     """Function to return a connected socket, called on client side"""
     c_socket = socket_create()
     socket_connect(c_socket, HOST, PORT)
@@ -57,7 +57,7 @@ def socket_connect(c_socket: socket, host: str, port: int):
     return c_socket
 
 
-def socket_accept(s_socket: socket) -> tuple:
+def socket_accept(s_socket: socket.socket) -> tuple:
     """Calling the socket.accept() method and catching BlockingIOError"""
     try:
         client_soc = s_socket.accept()
@@ -67,7 +67,7 @@ def socket_accept(s_socket: socket) -> tuple:
     return client_soc
 
 
-def socket_close(soc: socket):
+def socket_close(soc: socket.socket):
     """only printing exception name if one happens"""
     try:
         soc.shutdown(socket.SHUT_RDWR)
