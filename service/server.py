@@ -66,6 +66,6 @@ if __name__ == "__main__":
 
         while True:
             serve(clients_dict)
-            
+
     except KeyboardInterrupt:
         exit(0)
