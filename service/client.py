@@ -1,7 +1,7 @@
 import socket
 import sys
 
-from backup.kindaTrash import service
+from backup.old import service
 
 
 host = "localhost"
