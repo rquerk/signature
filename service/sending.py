@@ -1,7 +1,7 @@
 """This is a helper module for sending and receiving bytes over sockets"""
 
 import ExceptionHandling as Exc
-from socket import socket
+from socket_wrapper import SocketWrap
 
 buffer_size: int = 512
 message_length: int = 1024
@@ -9,7 +9,7 @@ message_length: int = 1024
 close_bytes: bytes = b"\r\n"
 
 
-def send_bytes_to_socket(c_socket: socket, msg: bytes) -> int:
+def send_bytes_to_socket(c_socket: SocketWrap, msg: bytes) -> int:
     """Utilizing send() in a while loop: send(msg[bytes_send:]).
     Also catching BrokenPipeError.
     """
@@ -24,14 +24,14 @@ def send_bytes_to_socket(c_socket: socket, msg: bytes) -> int:
     return bytes_send
 
 
-def receive_bytes_from_socket(c_socket: socket) -> bytes:
+def receive_bytes_from_socket(c_socket: SocketWrap) -> bytes:
     """Calling recv() in a while loop using a bytearray to append
     the received buffer to a result value witch can be returned.
     """
     bytes_received = 0
     request: bytearray = bytearray(b"")
     while bytes_received < message_length:
-        client_data: bytes = c_socket.recv(buffer_size)
+        client_data: bytes = c_socket.receive(buffer_size)
         if not client_data or client_data == b"":
             return b""  # or break?
         bytes_received += len(client_data)
