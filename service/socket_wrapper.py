@@ -17,6 +17,9 @@ class SocketWrap:
     def init(self, family: int, socket_type: int):
         self.socket_obj = socket.socket(family, socket_type)
 
+    def set_socket_options(self, level: int, opt_name: int, value):
+        self.socket_obj.setsockopt(level, opt_name, value)
+
     def send(self, data: bytes):
         return self.socket_obj.send(data)
 
@@ -29,14 +32,11 @@ class SocketWrap:
     def close(self):
         self.socket_obj.close()
 
-    def set_socket_options(self, level: int, opt_name: int, value):
-        self.socket_obj.setsockopt(level, opt_name, value)
+
+class ServerSocketWrap(SocketWrap):
 
     def set_blocking(self, block: bool):
         self.socket_obj.setblocking(block)
-
-
-class ServerSocketWrap(SocketWrap):
 
     def bind(self, host, port):
         self.socket_obj.bind((host, port))

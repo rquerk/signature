@@ -1,17 +1,19 @@
 """The module which implements the communication protocol"""
 
-import cryptic
 import select
-from socket_wrapper import SocketWrap
-from socket_wrapper import ClientSocketWrap
 
+from socket_wrapper import SocketWrap
 import ExceptionHandling as Exc
+
+from socket_wrapper import ClientSocketWrap
 from EstablishConnection import socket_close
 from sending import send_bytes_to_socket
 from sending import receive_bytes_from_socket
 from sending import close_bytes
+import cryptic
 
-# TODO: separate select functions from
+
+# TODO: separate select functions
 
 
 def select_client_socket(client_sockets: dict, mode: str = "rd"):
@@ -41,7 +43,7 @@ def _select_client_socket(client_sockets: dict, mode: str) -> SocketWrap:
     raise Exc.SelectException
 
 
-def _try_to_select_socket_and_pop_it(cl_soc: dict, mode) -> SocketWrap:
+def _try_to_select_socket_and_pop_it(cl_soc: dict, mode: str) -> SocketWrap:
     """Taking last client in the list"""
     selected_sockets: list = _select_read_or_write(cl_soc, mode)
     if len(selected_sockets) > 0:
@@ -58,7 +60,7 @@ def _select_read_or_write(socs: dict, rd_wr: str) -> list:
         client_sockets_wr = select.select([], socs["sockets"], [], 0)
         return client_sockets_wr[1]
 
-
+#//////////////////////////////////////////////////////////////////////////
 def digest_client_request_and_send_back(ready_client: ClientSocketWrap):
     """receive some data, digest it and send it back"""
     client_request: bytes = receive_bytes_from_socket(ready_client)
