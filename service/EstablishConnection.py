@@ -25,7 +25,7 @@ def socket_create() -> socket.socket:
         socket is set to be reusable.
         """
     socket_fd = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    socket_fd.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    socket_fd.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)  # SO_REUSE_ADDRESS
     return socket_fd
 
 
