@@ -39,7 +39,7 @@ def _select_client_socket(client_sockets: dict, mode: str) -> socket:
     raise Exc.SelectException
 
 
-def _try_to_select_socket_and_pop_it(cl_soc: socket, mode) -> socket:
+def _try_to_select_socket_and_pop_it(cl_soc: dict, mode) -> socket:
     """Taking last client in the list"""
     selected_sockets: list = _select_read_or_write(cl_soc, mode)
     if len(selected_sockets) > 0:
