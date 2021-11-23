@@ -1,6 +1,7 @@
 """Implementing the logic of the service"""
 
 import SocketServer as Soc
+import selector
 import EstablishConnection as EstC
 from socket_wrapper import ClientSocketWrap
 clients_dict = dict
@@ -39,7 +40,7 @@ def process_client():
 
 def get_ready_client_socket():
     # only checking for readability
-    ready_client_socket = Soc.select_client_socket(clients_dict)
+    ready_client_socket = selector.select_client_socket(clients_dict)
     wrapped_client = wrap_client_socket(ready_client_socket)
     return wrapped_client
 
@@ -65,6 +66,6 @@ if __name__ == "__main__":
 
         while True:
             serve(clients_dict)
-
+            
     except KeyboardInterrupt:
         exit(0)
