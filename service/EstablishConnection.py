@@ -33,10 +33,10 @@ def socket_create():
     """This function calls the socket() and setsockopt() methods;
         socket is set to be reusable.
         """
-    socket_fd = ServerSocketWrap()
-    socket_fd.init(AF_INET, SOCK_STREAM)
-    socket_fd.set_socket_options(SOL_SOCKET, SO_REUSE_ADDRESS, 1)
-    return socket_fd
+    socket_wrap = ServerSocketWrap()
+    socket_wrap.init(AF_INET, SOCK_STREAM)
+    socket_wrap.set_socket_options(SOL_SOCKET, SO_REUSE_ADDRESS, 1)
+    return socket_wrap
 
 
 def socket_create_client():
