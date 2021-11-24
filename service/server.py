@@ -2,7 +2,7 @@
 
 import service
 import selector
-import EstablishConnection as EstC
+from establish_connection import ServerSocketConnection
 from socket_wrapper import ClientSocketWrap
 from time import sleep
 
@@ -24,11 +24,11 @@ def wrap_client_socket(socket) -> ClientSocketWrap:
 
 class Server:
 
-    server_socket: EstC.ServerSocketConnection
+    server_socket: ServerSocketConnection
     clients: list = []
 
     def __init__(self):
-        self.server_socket = EstC.ServerSocketConnection()
+        self.server_socket = ServerSocketConnection()
         self.server_socket.set_host_port("", 5421)
 
     def serve(self):

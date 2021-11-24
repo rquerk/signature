@@ -1,6 +1,6 @@
 import unittest
 import service
-import EstablishConnection
+import establish_connection
 
 
 class ServerTestClass(unittest.TestCase):

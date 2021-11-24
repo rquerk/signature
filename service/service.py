@@ -1,4 +1,4 @@
-"""The module which implements the communication protocol"""
+"""The module which implements the communication protocol/functionality"""
 
 import exception_handling as exc
 from socket_wrapper import SocketWrap
