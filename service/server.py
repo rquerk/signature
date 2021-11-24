@@ -1,6 +1,6 @@
 """Implementing the logic of the service"""
 
-import SocketServer as Soc
+import SocketServer
 import selector
 import EstablishConnection as EstC
 from socket_wrapper import ClientSocketWrap
@@ -51,8 +51,8 @@ def wrap_client_socket(socket):
 
 def send_back_digested_msg_and_close_connection(client):
     if client.is_valid():
-        Soc.digest_client_request_and_send_back(client)
-        Soc.close_connection_and_del_client_elem(client, clients)
+        SocketServer.digest_client_request_and_send_back(client)
+        SocketServer.close_connection_and_del_client_elem(client, clients)
 
 
 if __name__ == "__main__":
