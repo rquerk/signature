@@ -4,10 +4,11 @@ import SocketServer as Soc
 import selector
 import EstablishConnection as EstC
 from socket_wrapper import ClientSocketWrap
-clients_dict = dict
+
+clients: list = []
 
 
-def serve(clients_iterable):
+def serve():
     client_tuple: tuple = EstC.socket_accept(server_socket)
 
     if is_valid(client_tuple):
@@ -15,7 +16,7 @@ def serve(clients_iterable):
 
     process_client()
 
-    if client_tuple in clients_iterable:
+    if client_tuple in clients:
         EstC.socket_close(client_tuple[0])
 
 
@@ -29,8 +30,7 @@ def is_valid(client_tuple: tuple) -> bool:
 
 
 def fill_client_waiting_list(client_tuple: tuple):
-    clients_dict["sockets"].append(client_tuple[0])
-    clients_dict["addresses"].append(client_tuple[1])
+    clients.append(client_tuple[0])
 
 
 def process_client():
@@ -40,7 +40,7 @@ def process_client():
 
 def get_ready_client_socket():
     # only checking for readability
-    ready_client_socket = selector.select_client_socket(clients_dict)
+    ready_client_socket = selector.select_client_socket(clients)
     wrapped_client = wrap_client_socket(ready_client_socket)
     return wrapped_client
 
@@ -54,7 +54,7 @@ def wrap_client_socket(socket):
 def send_back_digested_msg_and_close_connection(client):
     if client.is_valid():
         Soc.digest_client_request_and_send_back(client)
-        Soc.close_connection_and_del_client_elem(client, clients_dict)
+        Soc.close_connection_and_del_client_elem(client, clients)
 
 
 if __name__ == "__main__":
@@ -62,10 +62,8 @@ if __name__ == "__main__":
         server_socket = EstC.socket_create_bind_and_listen()
         server_socket.set_blocking(False)
 
-        clients_dict = {"sockets": [], "addresses": []}
-
         while True:
-            serve(clients_dict)
+            serve()
 
     except KeyboardInterrupt:
         exit(0)

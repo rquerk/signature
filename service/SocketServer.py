@@ -24,7 +24,7 @@ def _send_digested(soc: SocketWrap, msg: bytes):
     send_bytes_to_socket(soc, close_bytes)
 
 
-def close_connection_and_del_client_elem(soc: SocketWrap, client_list: dict):
+def close_connection_and_del_client_elem(soc: SocketWrap, client_list):
     """Closes socket connection and removes the socket from the ready clients list"""
     try:
         _del_client_elem(soc, client_list)
@@ -34,7 +34,7 @@ def close_connection_and_del_client_elem(soc: SocketWrap, client_list: dict):
         Exc.handle_exception_and_exit(e, 700)
 
 
-def _del_client_elem(soc: SocketWrap, client_list: dict):
+def _del_client_elem(soc: SocketWrap, client_list):
     """Catching exceptions of the _del_all_info function"""
     try:
         _del_all_client_info(soc, client_list)
@@ -44,8 +44,7 @@ def _del_client_elem(soc: SocketWrap, client_list: dict):
         Exc.handle_exception_and_exit(ve, 6001)
 
 
-def _del_all_client_info(soc: SocketWrap, client_list: dict):
+def _del_all_client_info(soc: SocketWrap, client_list):
     """Calls the pop() method to delete elements in the lists of the client dict."""
-    list_index = client_list["sockets"].index(soc.socket_obj)
-    client_list["sockets"].pop(list_index)
-    client_list["addresses"].pop(list_index)
+    list_index = client_list.index(soc.socket_obj)
+    client_list.pop(list_index)
