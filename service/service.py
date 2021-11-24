@@ -1,6 +1,6 @@
 """The module which implements the communication protocol"""
 
-import ExceptionHandling as Exc
+import exception_handling as exc
 from socket_wrapper import SocketWrap
 
 from sending import receive_bytes_from_socket
@@ -29,7 +29,7 @@ def close_connection_and_del_client_elem(soc: SocketWrap, client_list):
         if soc is not None:
             soc.close()
     except Exception as e:
-        Exc.handle_exception_and_exit(e, 700)
+        exc.handle_exception_and_exit(e, 700)
 
 
 def _del_client_elem(soc: SocketWrap, client_list):
@@ -37,9 +37,9 @@ def _del_client_elem(soc: SocketWrap, client_list):
     try:
         _del_all_client_info(soc, client_list)
     except IndexError as ie:
-        Exc.handle_exception_and_exit(ie, 6000)
+        exc.handle_exception_and_exit(ie, 6000)
     except ValueError as ve:
-        Exc.handle_exception_and_exit(ve, 6001)
+        exc.handle_exception_and_exit(ve, 6001)
 
 
 def _del_all_client_info(soc: SocketWrap, client_list):

@@ -1,6 +1,6 @@
 """This is a helper module for sending and receiving bytes over sockets"""
 
-from ExceptionHandling import print_exception_str
+from exception_handling import print_exception_str
 from socket_wrapper import SocketWrap
 
 buffer_size: int = 512

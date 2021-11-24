@@ -1,17 +1,17 @@
 """Module to handle the select call"""
 
 import select
-import ExceptionHandling as Exc
+import exception_handling as exc
 from socket_wrapper import SocketWrap
 
 
-def select_client_socket(client_sockets, mode: str = "rd"):
+def select_client_socket(client_sockets, mode: str = "rd") -> SocketWrap:
     """Head function for select() call, handling the case, that
     no exception was raised nor a value was returned"""
     try:
         return _select_client_socket(client_sockets, mode)
-    except Exc.SelectException as se:
-        Exc.print_exception_str(se)
+    except exc.SelectException as se:
+        exc.print_exception_str(se)
 
 
 def _select_client_socket(client_sockets, mode: str) -> SocketWrap:
@@ -20,15 +20,15 @@ def _select_client_socket(client_sockets, mode: str) -> SocketWrap:
         readable_socket = _try_to_select_socket_and_pop_it(client_sockets, mode)
         return readable_socket
     except RuntimeError as RE:
-        Exc.print_exception_str(RE)
+        exc.print_exception_str(RE)
     except AttributeError as AE:
-        Exc.handle_exception_and_exit(AE, 4200)
+        exc.handle_exception_and_exit(AE, 4200)
     except ValueError as VE:
-        Exc.print_exception_str(VE)
+        exc.print_exception_str(VE)
     except Exception as e:
-        Exc.handle_exception_and_exit(e, 4201)
+        exc.handle_exception_and_exit(e, 4201)
     # if we get here, something must be very wrong
-    raise Exc.SelectException
+    raise exc.SelectException
 
 
 def _try_to_select_socket_and_pop_it(cl_soc, mode: str) -> SocketWrap:
