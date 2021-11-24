@@ -16,9 +16,6 @@ def serve():
 
     process_client()
 
-    if client_tuple in clients:
-        EstC.socket_close(client_tuple[0])
-
 
 def is_valid(client_tuple: tuple) -> bool:
     if client_tuple == ():
