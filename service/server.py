@@ -6,62 +6,64 @@ import EstablishConnection as EstC
 from socket_wrapper import ClientSocketWrap
 from time import sleep
 
-clients: list = []
 
+class Server:
 
-def serve():
-    client_tuple: tuple = EstC.socket_accept(server_socket)
+    server_socket: EstC.ServerSocketConnection
+    clients: list = []
 
-    if is_valid(client_tuple):
-        fill_client_waiting_list(client_tuple)
+    def __init__(self):
+        self.server_socket = EstC.ServerSocketConnection()
+        self.server_socket.set_host_port("", 5421)
 
-    process_client()
+    def serve(self):
+        client_tuple: tuple = self.server_socket.socket_accept()
 
+        if self.is_valid(client_tuple):
+            self.fill_client_waiting_list(client_tuple)
 
-def is_valid(client_tuple: tuple) -> bool:
-    if client_tuple == ():
-        return False
-    if client_tuple[0] == -1:
-        return False
+        self.process_client()
 
-    return True
+    def is_valid(self, client_tuple: tuple) -> bool:
+        if client_tuple == ():
+            return False
+        if client_tuple[0] == -1:
+            return False
 
+        return True
 
-def fill_client_waiting_list(client_tuple: tuple):
-    clients.append(client_tuple[0])
+    def fill_client_waiting_list(self, client_tuple: tuple):
+        self.clients.append(client_tuple[0])
 
+    def process_client(self):
+        client = self.get_ready_client_socket()
+        self.send_back_digested_msg_and_close_connection(client)
 
-def process_client():
-    ready_client_socket = get_ready_client_socket()
-    send_back_digested_msg_and_close_connection(ready_client_socket)
-        
+    def get_ready_client_socket(self):
+        # only checking for readability
+        ready_client_socket = selector.select_client_socket(self.clients)
+        wrapped_client = self.wrap_client_socket(ready_client_socket)
+        return wrapped_client
 
-def get_ready_client_socket():
-    # only checking for readability
-    ready_client_socket = selector.select_client_socket(clients)
-    wrapped_client = wrap_client_socket(ready_client_socket)
-    return wrapped_client
+    def wrap_client_socket(self, socket):
+        client_socket_wrap = ClientSocketWrap()
+        client_socket_wrap.socket_obj = socket
+        return client_socket_wrap
 
-
-def wrap_client_socket(socket):
-    client = ClientSocketWrap()
-    client.socket_obj = socket
-    return client
-
-
-def send_back_digested_msg_and_close_connection(client):
-    if client.is_valid():
-        SocketServer.digest_client_request_and_send_back(client)
-        SocketServer.close_connection_and_del_client_elem(client, clients)
+    def send_back_digested_msg_and_close_connection(self, client):
+        if client.is_valid():
+            SocketServer.digest_client_request_and_send_back(client)
+            SocketServer.close_connection_and_del_client_elem(client, self.clients)
 
 
 if __name__ == "__main__":
     try:
-        server_socket = EstC.socket_create_bind_and_listen()
-        server_socket.set_blocking(False)
+        server = Server()
+        server.server_socket.socket_create_bind_and_listen()
+        server.server_socket.socket_wrap.set_blocking(False)
 
         while True:
-            serve()
+            server.serve()
             sleep(1)  # prevents the server from taking all the cpu resources
 
     except KeyboardInterrupt:

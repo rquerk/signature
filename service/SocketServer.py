@@ -8,8 +8,6 @@ from sending import send_bytes_to_socket
 from sending import close_bytes
 import cryptic
 
-from EstablishConnection import socket_close
-
 
 def digest_client_request_and_send_back(ready_client: SocketWrap):
     """receive some data, digest it and send it back"""
@@ -29,7 +27,7 @@ def close_connection_and_del_client_elem(soc: SocketWrap, client_list):
     try:
         _del_client_elem(soc, client_list)
         if soc is not None:
-            socket_close(soc)
+            soc.close()
     except Exception as e:
         Exc.handle_exception_and_exit(e, 700)
 
@@ -48,3 +46,6 @@ def _del_all_client_info(soc: SocketWrap, client_list):
     """Calls the pop() method to delete elements in the lists of the client dict."""
     list_index = client_list.index(soc.socket_obj)
     client_list.pop(list_index)
+
+
+
