@@ -10,7 +10,7 @@ from socket_wrapper import ServerSocketWrap
 from socket_wrapper import ClientSocketWrap
 from socket_wrapper import get_host_by_name
 
-import ExceptionHandling as Exc
+from ExceptionHandling import print_exception_str
 from ExceptionHandling import handle_exception_and_exit
 
 
@@ -95,6 +95,6 @@ def socket_close(soc: SocketWrap):
     except OSError as os:
         # trying to close a non existing fd;
         # client might have closed the connection already
-        Exc.print_exception_str(os)
+        print_exception_str(os)
     except Exception as e:
-        Exc.print_exception_str(e)
+        print_exception_str(e)

@@ -1,6 +1,6 @@
 """This is a helper module for sending and receiving bytes over sockets"""
 
-import ExceptionHandling as Exc
+from ExceptionHandling import print_exception_str
 from socket_wrapper import SocketWrap
 
 buffer_size: int = 512
@@ -18,7 +18,7 @@ def send_bytes_to_socket(c_socket: SocketWrap, msg: bytes) -> int:
         try:
             bytes_send += c_socket.send(msg[bytes_send:])
         except BrokenPipeError as bpe:
-            Exc.print_exception_str(bpe)
+            print_exception_str(bpe)
         if not bytes_send:
             break
     return bytes_send

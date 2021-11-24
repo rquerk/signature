@@ -25,7 +25,6 @@ def _select_client_socket(client_sockets, mode: str) -> SocketWrap:
         Exc.handle_exception_and_exit(AE, 4200)
     except ValueError as VE:
         Exc.print_exception_str(VE)
-        Exc.print_error_code(500)
     except Exception as e:
         Exc.handle_exception_and_exit(e, 4201)
     # if we get here, something must be very wrong

@@ -18,7 +18,7 @@ def handle_exception_and_exit(e: Exception, exitcode):
     """Using this function for exceptions that make it impossible to run the server any longer"""
     print(e)
     print(traceback.format_exc())
-    print_error_code(exitcode)
+    # print_error_code(exitcode)
     exit(exitcode)
 
 
