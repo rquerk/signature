@@ -4,6 +4,7 @@ import SocketServer as Soc
 import selector
 import EstablishConnection as EstC
 from socket_wrapper import ClientSocketWrap
+from time import sleep
 
 clients: list = []
 
@@ -61,6 +62,7 @@ if __name__ == "__main__":
 
         while True:
             serve()
+            sleep(1)  # prevents the server from taking all the cpu resources
 
     except KeyboardInterrupt:
         exit(0)
