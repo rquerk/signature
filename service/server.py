@@ -17,27 +17,25 @@ class Server:
         self.server_socket.set_host_port("", 5421)
 
     def serve(self):
-        client_tuple: tuple = self.server_socket.socket_accept()
+        self.accept_new_client_and_push_to_waiting_list()
+        client = self.get_ready_client_from_waiting_list()
+        self.process_client(client)
 
+    def accept_new_client_and_push_to_waiting_list(self):
+        client_tuple: tuple = self.server_socket.socket_accept()
         if is_valid(client_tuple):
             self.fill_client_waiting_list(client_tuple)
-
-        self.process_client()
 
     def fill_client_waiting_list(self, client_tuple: tuple):
         self.clients.append(client_tuple[0])
 
-    def process_client(self):
-        client = self.get_ready_client_socket()
-        self.send_back_digested_msg_and_close_connection(client)
-
-    def get_ready_client_socket(self):
+    def get_ready_client_from_waiting_list(self):
         # only checking for readability
         ready_client_socket = selector.select_client_socket(self.clients)
         wrapped_client = wrap_client_socket(ready_client_socket)
         return wrapped_client
 
-    def send_back_digested_msg_and_close_connection(self, client):
+    def process_client(self, client):
         if client.is_valid():
             service.digest_client_request_and_send_back(client)
             service.close_connection_and_del_client_elem(client, self.clients)

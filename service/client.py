@@ -20,4 +20,4 @@ response = service.receive_bytes_from_socket(soc)
 soc.shutdown(socket.SHUT_RDWR)
 soc.close()
 
-print(response, file=sys.stdout)
+print(response.decode(errors="ignore"), file=sys.stdout)
