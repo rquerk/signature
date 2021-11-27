@@ -16,6 +16,10 @@ class Server:
         self.server_socket = ServerSocketConnection()
         self.server_socket.set_host_port("", 5421)
 
+    def start(self):
+        self.server_socket.socket_create_bind_and_listen()
+        self.server_socket.socket_wrap.set_blocking(False)
+
     def serve(self):
         self.accept_new_client_and_push_to_waiting_list()
         client = self.get_ready_client_from_waiting_list()
@@ -59,8 +63,7 @@ def wrap_client_socket(socket) -> ClientSocketWrap:
 if __name__ == "__main__":
     try:
         server = Server()
-        server.server_socket.socket_create_bind_and_listen()
-        server.server_socket.socket_wrap.set_blocking(False)
+        server.start()
 
         while True:
             server.serve()
