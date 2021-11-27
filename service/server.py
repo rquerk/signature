@@ -41,8 +41,9 @@ class Server:
 
     def process_client(self, client):
         if client.is_valid():
-            service.digest_client_request_and_send_back(client)
-            service.close_connection_and_del_client_elem(client, self.clients)
+            s = service.Service(client)
+            s.digest_client_request_and_send_back()
+            s.close_connection_and_del_client_elem(self.clients)
 
 
 def is_valid(client_tuple: tuple) -> bool:

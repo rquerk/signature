@@ -9,35 +9,39 @@ from sending import close_bytes
 import cryptic
 
 
-def digest_client_request_and_send_back(ready_client: SocketWrap):
-    """receive some data, digest it and send it back"""
-    client_request: bytes = receive_bytes_from_socket(ready_client)
-    if client_request != b"":
-        _send_digested(ready_client, client_request)
+class Service:
 
+    client: SocketWrap
 
-def _send_digested(soc: SocketWrap, msg: bytes):
-    """first sending the message then sending the closing bytes"""
-    send_bytes_to_socket(soc, cryptic.digest(msg))
-    send_bytes_to_socket(soc, close_bytes)
+    def __init__(self, client):
+        self.client = client
 
+    def digest_client_request_and_send_back(self):
+        """receive some data, digest it and send it back"""
+        client_request: bytes = receive_bytes_from_socket(self.client)
+        if client_request != b"":
+            self._send_digested(client_request)
 
-def close_connection_and_del_client_elem(soc: SocketWrap, client_list):
-    """Closes socket connection and removes the socket from the ready clients list"""
-    try:
-        _del_client_elem(soc, client_list)
-        if soc is not None:
-            soc.close()
-    except Exception as e:
-        exc.handle_exception_and_exit(e, 700)
+    def _send_digested(self, msg: bytes):
+        """first sending the message then sending the closing bytes"""
+        send_bytes_to_socket(self.client, cryptic.digest(msg))
+        send_bytes_to_socket(self.client, close_bytes)
 
+    def close_connection_and_del_client_elem(self, client_list):
+        """Closes socket connection and removes the socket from the ready clients list"""
+        try:
+            self._del_client_elem(client_list)
+            if self.client is not None:
+                self.client.close()
+        except Exception as e:
+            exc.handle_exception_and_exit(e, 700)
 
-def _del_client_elem(soc: SocketWrap, client_list):
-    """Calls the pop() method to delete the element in the lists of the clients"""
-    try:
-        list_index = client_list.index(soc.socket_obj)
-        client_list.pop(list_index)
-    except IndexError as ie:
-        exc.handle_exception_and_exit(ie, 6000)
-    except ValueError as ve:
-        exc.handle_exception_and_exit(ve, 6001)
+    def _del_client_elem(self, client_list):
+        """Calls the pop() method to delete the element in the lists of the clients"""
+        try:
+            list_index = client_list.index(self.client.socket_obj)
+            client_list.pop(list_index)
+        except IndexError as ie:
+            exc.handle_exception_and_exit(ie, 6000)
+        except ValueError as ve:
+            exc.handle_exception_and_exit(ve, 6001)
