@@ -7,21 +7,6 @@ from socket_wrapper import ClientSocketWrap
 from time import sleep
 
 
-def is_valid(client_tuple: tuple) -> bool:
-    if client_tuple == ():
-        return False
-    if client_tuple[0] == -1:
-        return False
-
-    return True
-
-
-def wrap_client_socket(socket) -> ClientSocketWrap:
-    client_socket_wrap = ClientSocketWrap()
-    client_socket_wrap.socket_obj = socket
-    return client_socket_wrap
-
-
 class Server:
 
     server_socket: ServerSocketConnection
@@ -56,6 +41,21 @@ class Server:
         if client.is_valid():
             service.digest_client_request_and_send_back(client)
             service.close_connection_and_del_client_elem(client, self.clients)
+
+
+def is_valid(client_tuple: tuple) -> bool:
+    if client_tuple == ():
+        return False
+    if client_tuple[0] == -1:
+        return False
+
+    return True
+
+
+def wrap_client_socket(socket) -> ClientSocketWrap:
+    client_socket_wrap = ClientSocketWrap()
+    client_socket_wrap.socket_obj = socket
+    return client_socket_wrap
 
 
 if __name__ == "__main__":

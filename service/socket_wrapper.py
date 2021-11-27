@@ -30,7 +30,6 @@ class SocketWrap:
         self.socket_obj.shutdown(how)
 
     def close(self):
-
         self.socket_obj.close()
 
 
