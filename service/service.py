@@ -33,19 +33,11 @@ def close_connection_and_del_client_elem(soc: SocketWrap, client_list):
 
 
 def _del_client_elem(soc: SocketWrap, client_list):
-    """Catching exceptions of the _del_all_info function"""
+    """Calls the pop() method to delete the element in the lists of the clients"""
     try:
-        _del_all_client_info(soc, client_list)
+        list_index = client_list.index(soc.socket_obj)
+        client_list.pop(list_index)
     except IndexError as ie:
         exc.handle_exception_and_exit(ie, 6000)
     except ValueError as ve:
         exc.handle_exception_and_exit(ve, 6001)
-
-
-def _del_all_client_info(soc: SocketWrap, client_list):
-    """Calls the pop() method to delete elements in the lists of the client dict."""
-    list_index = client_list.index(soc.socket_obj)
-    client_list.pop(list_index)
-
-
-
