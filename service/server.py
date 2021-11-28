@@ -9,11 +9,11 @@ from lib.socket_wrapper import SocketWrap
 
 class Server:
     server_socket: ABConnection
-    clients: list = []
 
     def __init__(self, server_socket):
         self.server_socket = server_socket
         self.server_socket.set_host_port("", 5421)
+        self.clients = ClientList()
 
     def start(self):
         self.server_socket.create()
@@ -21,12 +21,26 @@ class Server:
 
     def new_client(self):
         self.accept_new_client_and_push_to_waiting_list()
-        return self.get_wrapped_client_from_waiting_list()
+        return self.clients.get_wrapped_client_from_waiting_list()
 
     def accept_new_client_and_push_to_waiting_list(self):
         client_tuple: tuple = self.server_socket.socket_accept()
         if is_valid(client_tuple):
-            self.fill_client_waiting_list(client_tuple)
+            self.clients.fill_client_waiting_list(client_tuple)
+
+
+def is_valid(client_tuple: tuple) -> bool:
+    if client_tuple == ():
+        return False
+    if client_tuple[0] == -1:
+        return False
+
+    return True
+
+
+class ClientList:
+
+    clients: list = []
 
     def fill_client_waiting_list(self, client_tuple: tuple):
         self.clients.append(client_tuple[0])
@@ -40,15 +54,6 @@ class Server:
     def process_client(self, service: ABService):
         if service.is_valid() and len(self.clients) > 0:
             service.serve(self.clients)
-
-
-def is_valid(client_tuple: tuple) -> bool:
-    if client_tuple == ():
-        return False
-    if client_tuple[0] == -1:
-        return False
-
-    return True
 
 
 # if this function returned a SocketConnection, SocketConnections close function could be used,

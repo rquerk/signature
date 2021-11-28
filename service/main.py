@@ -17,7 +17,7 @@ if __name__ == "__main__":
             client_wrap = server.new_client()
             transmitter = Transmitter()
             signature = Service(client_wrap, transmitter)
-            server.process_client(signature)
+            server.clients.process_client(signature)
             sleep(1)  # prevents the server from taking all the cpu resources
 
     except KeyboardInterrupt:
