@@ -1,6 +1,6 @@
 """This is a helper module for sending and receiving bytes over sockets"""
 
-from service.lib.exception_handling import print_exception_str
+from service.lib.exceptions.exception_handling import print_exception_str
 from service.lib.socket_wrapper import SocketWrap
 
 

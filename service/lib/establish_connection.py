@@ -10,8 +10,8 @@ from service.lib.socket_wrapper import ServerSocketWrap
 from service.lib.socket_wrapper import ClientSocketWrap
 from service.lib.socket_wrapper import get_host_by_name
 
-from service.lib.exception_handling import print_exception_str
-from service.lib.exception_handling import handle_exception_and_exit
+from service.lib.exceptions.exception_handling import print_exception_str
+from service.lib.exceptions.exception_handling import handle_exception_and_exit
 
 
 class SocketConnection:
