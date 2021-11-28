@@ -42,8 +42,8 @@ class Service(ABService):
     def _del_client_elem(self, client_list):
         """Calls the pop() method to delete the element in the lists of the clients"""
         try:
-            list_index = client_list.index(self.transmit.client.socket_obj)
-            client_list.pop(list_index)
+            list_index = client_list.clients.index(self.transmit.client.socket_obj)
+            client_list.clients.pop(list_index)
         except IndexError as ie:
             handle_exception_and_exit(ie, 6000)
         except ValueError as ve:
