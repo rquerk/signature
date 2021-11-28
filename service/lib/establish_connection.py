@@ -1,5 +1,7 @@
 """Module to establish a TCP socket connection"""
 
+from service.I_connection import ABConnection
+
 from service.lib.socket_wrapper import AF_INET
 from service.lib.socket_wrapper import SOCK_STREAM
 from service.lib.socket_wrapper import SOL_SOCKET
@@ -24,7 +26,10 @@ class SocketConnection:
         self.HOST = host
         self.PORT = port
 
-    def socket_create(self):
+    def create(self):
+        return self.socket_create()
+
+    def socket_create(self) -> SocketWrap:
         """This function calls the socket() and setsockopt() methods;
             socket is set to be reusable.
             """
@@ -45,10 +50,13 @@ class SocketConnection:
             print_exception_str(e)
 
 
-class ServerSocketConnection(SocketConnection):
+class ServerSocketConnection(SocketConnection, ABConnection):
 
     socket_wrap: ServerSocketWrap
     connection_queue_size: int = 2
+
+    def create(self):
+        return self.socket_create_bind_and_listen()
 
     def socket_create_bind_and_listen(self) -> ServerSocketWrap:
         """Function to return a listening socket, called on Server side"""
@@ -78,10 +86,16 @@ class ServerSocketConnection(SocketConnection):
 
         return client_soc
 
+    def set_blocking(self, boolean):
+        self.socket_wrap.set_blocking(boolean)
+
 
 class ClientSocketConnection(SocketConnection):
 
     socket_wrap: ClientSocketWrap
+
+    def create(self):
+        return self.socket_create_and_connect()
 
     def socket_create_and_connect(self) -> ClientSocketWrap:
         """Function to return a connected socket, called on client side"""

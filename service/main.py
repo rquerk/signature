@@ -1,11 +1,16 @@
-from lib.service import Service
-from lib.send.sending import Transmitter
 from server import Server
+
+from lib.establish_connection import ServerSocketConnection
+from lib.send.sending import Transmitter
+from lib.service import Service
+
 from time import sleep
 
 if __name__ == "__main__":
     try:
-        server = Server()
+
+        server_socket = ServerSocketConnection()
+        server = Server(server_socket)
         server.start()
 
         while True:
@@ -17,4 +22,3 @@ if __name__ == "__main__":
 
     except KeyboardInterrupt:
         exit(0)
-        

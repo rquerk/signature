@@ -1,22 +1,23 @@
 """Implementing the logic of the service"""
 
 from I_service import ABService
+from I_connection import ABConnection
+
 import lib.selector as selector
-from lib.establish_connection import ServerSocketConnection
 from lib.socket_wrapper import SocketWrap
 
 
 class Server:
-    server_socket: ServerSocketConnection
+    server_socket: ABConnection
     clients: list = []
 
-    def __init__(self):
-        self.server_socket = ServerSocketConnection()
+    def __init__(self, server_socket):
+        self.server_socket = server_socket
         self.server_socket.set_host_port("", 5421)
 
     def start(self):
-        self.server_socket.socket_create_bind_and_listen()
-        self.server_socket.socket_wrap.set_blocking(False)
+        self.server_socket.create()
+        self.server_socket.set_blocking(False)
 
     def new_client(self):
         self.accept_new_client_and_push_to_waiting_list()
