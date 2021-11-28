@@ -2,17 +2,17 @@
 
 from service.I_service import ABService
 from service.lib.exceptions.exception_handling import handle_exception_and_exit
-import service.lib.sending as sending
+from service.lib.sending import Transmitter
 import service.lib.cryptic as cryptic
 
 
 class Service(ABService):
 
-    transmit: sending.Transmitter = None
+    transmit: Transmitter = None
 
     def __init__(self, client):
         if client is not None:
-            self.transmit = sending.Transmitter()
+            self.transmit = Transmitter()
             self.transmit.set_client(client)
 
     def serve(self, clients):
