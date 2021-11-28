@@ -1,6 +1,6 @@
 """Implementing the logic of the service"""
 
-import service
+import lib.service as service
 import lib.selector as selector
 from lib.establish_connection import ServerSocketConnection
 from lib.socket_wrapper import ClientSocketWrap

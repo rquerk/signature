@@ -1,8 +1,8 @@
 """The module which implements the communication protocol/functionality"""
 
-from exception_handling import handle_exception_and_exit
-import sending
-import cryptic
+from service.lib.exceptions.exception_handling import handle_exception_and_exit
+import service.lib.sending as sending
+import service.lib.cryptic as cryptic
 
 
 class Service:

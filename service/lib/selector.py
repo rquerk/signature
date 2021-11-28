@@ -1,8 +1,8 @@
 """Module to handle the select call"""
 
 import select
-import exception_handling as exc
-from socket_wrapper import SocketWrap
+import service.lib.exceptions.exception_handling as exc
+from service.lib.socket_wrapper import SocketWrap
 
 
 def select_client_socket(client_sockets, mode: str = "rd") -> SocketWrap:

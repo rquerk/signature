@@ -1,17 +1,17 @@
 """Module to establish a TCP socket connection"""
 
-from socket_wrapper import AF_INET
-from socket_wrapper import SOCK_STREAM
-from socket_wrapper import SOL_SOCKET
-from socket_wrapper import SO_REUSE_ADDRESS
-from socket_wrapper import SHUT_RD_WR
-from socket_wrapper import SocketWrap
-from socket_wrapper import ServerSocketWrap
-from socket_wrapper import ClientSocketWrap
-from socket_wrapper import get_host_by_name
+from service.lib.socket_wrapper import AF_INET
+from service.lib.socket_wrapper import SOCK_STREAM
+from service.lib.socket_wrapper import SOL_SOCKET
+from service.lib.socket_wrapper import SO_REUSE_ADDRESS
+from service.lib.socket_wrapper import SHUT_RD_WR
+from service.lib.socket_wrapper import SocketWrap
+from service.lib.socket_wrapper import ServerSocketWrap
+from service.lib.socket_wrapper import ClientSocketWrap
+from service.lib.socket_wrapper import get_host_by_name
 
-from exception_handling import print_exception_str
-from exception_handling import handle_exception_and_exit
+from service.lib.exception_handling import print_exception_str
+from service.lib.exception_handling import handle_exception_and_exit
 
 
 class SocketConnection:

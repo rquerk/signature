@@ -1,3 +1,5 @@
 .idea/
-service/__pycache__/
 service/backup/
+service/__pycache__/
+service/lib/__pycache__/
+service/lib/exceptions/__pycache__/
