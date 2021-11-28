@@ -1,16 +1,15 @@
 """This is a helper module for sending and receiving bytes over sockets"""
-
+from service.lib.I_sending import ABTransmitter
 from service.lib.exceptions.exception_handling import print_exception_str
 from service.lib.socket_wrapper import SocketWrap
 
 
-class Transmitter:
+class Transmitter(ABTransmitter):
 
     client: SocketWrap
 
     buffer_size: int = 512
     message_length: int = 1024
-    close_bytes: bytes = b"\r\n"
 
     def set_client(self, client):
         self.client = client

@@ -2,6 +2,7 @@
 
 from I_service import ABService
 from lib.service import Service
+from lib.sending import Transmitter
 import lib.selector as selector
 from lib.establish_connection import ServerSocketConnection
 from lib.socket_wrapper import ClientSocketWrap
@@ -67,7 +68,8 @@ if __name__ == "__main__":
 
         while True:
             client_wrap = server.new_client()
-            signature = Service(client_wrap)
+            transmitter = Transmitter()
+            signature = Service(client_wrap, transmitter)
             server.process_client(signature)
             sleep(1)  # prevents the server from taking all the cpu resources
 
