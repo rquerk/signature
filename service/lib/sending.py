@@ -49,3 +49,7 @@ class Transmitter:
     def received_closing_bytes(self, received_bytes: bytes) -> bool:
         if received_bytes[-len(self.close_bytes):] == self.close_bytes:
             return True
+
+    def is_valid(self):
+        if self.client is not None:
+            return self.client.is_valid()

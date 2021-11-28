@@ -32,6 +32,10 @@ class SocketWrap:
     def close(self):
         self.socket_obj.close()
 
+    def is_valid(self):
+        if self.socket_obj != -1 and self.socket_obj is not None:
+            return True
+
 
 class ServerSocketWrap(SocketWrap):
 
@@ -52,7 +56,3 @@ class ClientSocketWrap(SocketWrap):
 
     def connect(self, ip, port):
         return self.socket_obj.connect((ip, port))
-
-    def is_valid(self):
-        if self.socket_obj != -1 and self.socket_obj is not None:
-            return True

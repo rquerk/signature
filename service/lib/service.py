@@ -1,15 +1,23 @@
 """The module which implements the communication protocol/functionality"""
 
+from service.I_service import ABService
 from service.lib.exceptions.exception_handling import handle_exception_and_exit
 import service.lib.sending as sending
 import service.lib.cryptic as cryptic
 
 
-class Service:
+class Service(ABService):
+
+    transmit: sending.Transmitter = None
 
     def __init__(self, client):
-        self.transmit = sending.Transmitter()
-        self.transmit.set_client(client)
+        if client is not None:
+            self.transmit = sending.Transmitter()
+            self.transmit.set_client(client)
+
+    def serve(self, clients):
+        self.digest_client_request_and_send_back()
+        self.close_connection_and_del_client_elem(clients)
 
     def digest_client_request_and_send_back(self):
         """receive some data, digest it and send it back"""
@@ -40,3 +48,8 @@ class Service:
             handle_exception_and_exit(ie, 6000)
         except ValueError as ve:
             handle_exception_and_exit(ve, 6001)
+
+    def is_valid(self):
+        if self.transmit is not None:
+            return self.transmit.is_valid()
+
