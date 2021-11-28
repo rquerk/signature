@@ -2,7 +2,7 @@
 
 from I_service import ABService
 from lib.service import Service
-from lib.sending import Transmitter
+from lib.send.sending import Transmitter
 import lib.selector as selector
 from lib.establish_connection import ServerSocketConnection
 from lib.socket_wrapper import ClientSocketWrap
