@@ -1,12 +1,9 @@
 """Implementing the logic of the service"""
 
 from I_service import ABService
-from lib.service import Service
-from lib.send.sending import Transmitter
 import lib.selector as selector
 from lib.establish_connection import ServerSocketConnection
-from lib.socket_wrapper import ClientSocketWrap
-from time import sleep
+from lib.socket_wrapper import SocketWrap
 
 
 class Server:
@@ -55,23 +52,8 @@ def is_valid(client_tuple: tuple) -> bool:
 
 # if this function returned a SocketConnection, SocketConnections close function could be used,
 # witch hase some more, but maybe unneeded, error handling.
-def wrap_client_socket(socket) -> ClientSocketWrap:
-    client_socket_wrap = ClientSocketWrap()
+def wrap_client_socket(socket) -> SocketWrap:
+    client_socket_wrap = SocketWrap()
     client_socket_wrap.socket_obj = socket
     return client_socket_wrap
 
-
-if __name__ == "__main__":
-    try:
-        server = Server()
-        server.start()
-
-        while True:
-            client_wrap = server.new_client()
-            transmitter = Transmitter()
-            signature = Service(client_wrap, transmitter)
-            server.process_client(signature)
-            sleep(1)  # prevents the server from taking all the cpu resources
-
-    except KeyboardInterrupt:
-        exit(0)
