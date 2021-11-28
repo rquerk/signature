@@ -1,9 +1,9 @@
 """Implementing the logic of the service"""
 
 import service
-import selector
-from establish_connection import ServerSocketConnection
-from socket_wrapper import ClientSocketWrap
+import lib.selector as selector
+from lib.establish_connection import ServerSocketConnection
+from lib.socket_wrapper import ClientSocketWrap
 from time import sleep
 
 
