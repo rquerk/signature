@@ -3,4 +3,5 @@ service/backup/
 service/__pycache__/
 service/lib/__pycache__/
 service/lib/send/__pycache__/
+service/lib/sign/__pycache__/
 service/lib/exceptions/__pycache__/

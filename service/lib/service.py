@@ -1,9 +1,9 @@
 """The module which implements the communication protocol/functionality"""
 
 from service.I_service import ABService
-from service.lib.exceptions.exception_handling import handle_exception_and_exit
 from service.lib.I_sending import ABTransmitter
-import service.lib.cryptic as cryptic
+from service.lib.exceptions.exception_handling import handle_exception_and_exit
+import service.lib.sign.cryptic as cryptic
 
 
 class Service(ABService):
