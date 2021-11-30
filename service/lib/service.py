@@ -3,7 +3,7 @@
 from service.I_service import ABService
 from service.lib.I_sending import ABTransmitter
 from service.lib.exceptions.exception_handling import handle_exception_and_exit
-import service.lib.sign.cryptic as cryptic
+import service.lib.sign.cryptic as cry
 
 
 class Service(ABService):
@@ -16,18 +16,21 @@ class Service(ABService):
             self.transmit.set_client(client)
 
     def serve(self, clients):
-        self.digest_client_request_and_send_back()
+        self.sign_client_request_and_send_back()
         self.close_connection_and_del_client_elem(clients)
 
-    def digest_client_request_and_send_back(self):
+    def sign_client_request_and_send_back(self):
         """receive some data, digest it and send it back"""
         client_request: bytes = self.transmit.receive_bytes_from_socket()
         if client_request != b"":
-            self._send_digested(client_request)
+            self.do_and_send_signature(client_request)
 
-    def _send_digested(self, msg: bytes):
+    def do_and_send_signature(self, msg: bytes):
         """first sending the message then sending the closing bytes"""
-        self.transmit.send_bytes_to_socket(cryptic.digest(msg))
+        private_key_file = r"/home/levi/private_key_file"
+        pri = cry.read_key_from_file(private_key_file)
+        signature = cry.sign(msg, pri)
+        self.transmit.send_bytes_to_socket(signature)
         self.transmit.send_bytes_to_socket(self.transmit.close_bytes)
 
     def close_connection_and_del_client_elem(self, client_list):
@@ -52,4 +55,3 @@ class Service(ABService):
     def is_valid(self):
         if self.transmit is not None:
             return self.transmit.is_valid()
-

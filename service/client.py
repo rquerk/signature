@@ -1,6 +1,7 @@
 import socket
 import sys
 
+#from service.lib.establish_connection import ClientSocketConnection
 from backup.old import service
 
 
@@ -20,4 +21,5 @@ response = service.receive_bytes_from_socket(soc)
 soc.shutdown(socket.SHUT_RDWR)
 soc.close()
 
-print(response.decode(errors="ignore"), file=sys.stdout)
+print(fr"{response}", file=sys.stdout)
+# .decode("utf_8", errors="ignore")
