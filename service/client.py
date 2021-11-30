@@ -1,8 +1,7 @@
 import socket
 import sys
 
-#from service.lib.establish_connection import ClientSocketConnection
-from backup.old import service
+import client_lib as service
 
 
 host = "localhost"
