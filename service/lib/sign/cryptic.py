@@ -1,6 +1,6 @@
 # import hashlib
 import rsa
-
+import os
 
 # hash = rsa.compute_hash(message, 'SHA-1')
 # def digest(to_digest: bytes) -> bytes:
@@ -58,6 +58,7 @@ if __name__ == "__main__":
     public = keys[0]
     private = keys[1]
 
-    write_to_file(r"/home/levi/public_key_file", public.save_pkcs1(format="PEM"))
-    write_to_file(r"/home/levi/private_key_file", private.save_pkcs1(format="PEM"))
+    home = os.environ['HOME']
 
+    write_to_file(fr"{home}/public_key_file", public.save_pkcs1(format="PEM"))
+    write_to_file(fr"{home}/private_key_file", private.save_pkcs1(format="PEM"))

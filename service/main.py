@@ -1,5 +1,4 @@
 from service.src.server import Server
-
 from service.lib.client_list import ClientList
 from service.lib.establish_connection import ServerSocketConnection
 from service.lib.send.sending import Transmitter
