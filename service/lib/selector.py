@@ -2,10 +2,9 @@
 
 import select
 import service.lib.exceptions.exception_handling as exc
-from service.lib.socket_wrapper import SocketWrap
 
 
-def select_client_socket(client_sockets, mode: str = "rd") -> SocketWrap:
+def select_client_socket(client_sockets, mode: str = "rd"):
     """Head function for select() call, handling the case, that
     no exception was raised nor a value was returned"""
     try:
@@ -14,7 +13,7 @@ def select_client_socket(client_sockets, mode: str = "rd") -> SocketWrap:
         exc.print_exception_str(se)
 
 
-def _select_client_socket(client_sockets, mode: str) -> SocketWrap:
+def _select_client_socket(client_sockets, mode: str):
     """Handling select() exceptions"""
     try:
         readable_socket = _try_to_select_socket_and_pop_it(client_sockets, mode)
@@ -31,7 +30,7 @@ def _select_client_socket(client_sockets, mode: str) -> SocketWrap:
     raise exc.SelectException
 
 
-def _try_to_select_socket_and_pop_it(cl_soc, mode: str) -> SocketWrap:
+def _try_to_select_socket_and_pop_it(cl_soc, mode: str):
     """Taking last client in the list"""
     selected_sockets: list = _select_read_or_write(cl_soc, mode)
     if len(selected_sockets) > 0:

@@ -53,3 +53,6 @@ class Transmitter(ABTransmitter):
     def is_valid(self):
         if self.client is not None:
             return self.client.is_valid()
+
+    def close_connection(self):
+        pass

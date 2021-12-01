@@ -1,4 +1,4 @@
-from server import Server
+from service.server import Server
 
 from service.lib.client_list import ClientList
 from service.lib.establish_connection import ServerSocketConnection

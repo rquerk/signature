@@ -1,8 +1,8 @@
 """Implementing the logic of the service"""
 
-from I_connection import ABConnection
-from I_clients import ABClientList
-from I_service import ABService
+from service.I_connection import ABConnection
+from service.I_clients import ABClientList
+from service.I_service import ABService
 
 
 class Server:
