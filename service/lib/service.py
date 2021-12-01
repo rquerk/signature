@@ -33,6 +33,7 @@ class Service(ABService):
         self.transmit.send_bytes_to_socket(signature)
         self.transmit.send_bytes_to_socket(self.transmit.close_bytes)
 
+    # feels like this should be in SocketConnection Class
     def close_connection_and_del_client_elem(self, client_list):
         """Closes socket connection and removes the socket from the ready clients list"""
         try:

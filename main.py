@@ -16,10 +16,10 @@ if __name__ == "__main__":
         server.start()
 
         while True:
-            client_wrap = server.new_client()
+            client = server.new_client()
             transmitter = Transmitter()
-            signature = Service(client_wrap, transmitter)
-            server.process_client(signature)
+            signature_service = Service(client, transmitter)
+            server.process_client(signature_service)
             sleep(1)  # prevents the server from taking all the cpu resources
 
     except KeyboardInterrupt:
