@@ -1,6 +1,6 @@
 """Module to establish a TCP socket connection"""
 
-from service.I_connection import ABConnection
+from service.src.I_connection import ABConnection
 
 from service.lib.socket_wrapper import AF_INET
 from service.lib.socket_wrapper import SOCK_STREAM

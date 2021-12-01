@@ -3,6 +3,7 @@ __pycache__/
 tests/__pycache__/
 service/backup/
 service/__pycache__/
+service/src/__pycache__/
 service/lib/__pycache__/
 service/lib/send/__pycache__/
 service/lib/sign/__pycache__/
