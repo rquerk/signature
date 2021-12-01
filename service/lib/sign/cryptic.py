@@ -1,11 +1,11 @@
-import hashlib
+# import hashlib
 import rsa
 
 
 # hash = rsa.compute_hash(message, 'SHA-1')
-def digest(to_digest: bytes) -> bytes:
-    """Creates a sha256 hash."""
-    return hashlib.sha256(to_digest).digest()
+# def digest(to_digest: bytes) -> bytes:
+#    """Creates a sha256 hash."""
+#    return hashlib.sha256(to_digest).digest()
 
 
 def generate_key_pair(bits: int) -> ():
