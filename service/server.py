@@ -26,7 +26,7 @@ class Server:
         client_tuple: tuple = self.server_socket.socket_accept()
         if is_valid(client_tuple):
             self.clients.fill_client_waiting_list(client_tuple)
-    
+
     # maybe is not needed, just calls a Service method
     def process_client(self, service: ABService):
         if service.is_valid() and self.clients.length() > 0:
