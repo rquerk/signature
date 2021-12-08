@@ -8,8 +8,8 @@ path:
 install:
 	wget https://files.pythonhosted.org/packages/8c/ee/4022542e0fed77dd6ddade38e1e4dea3299f873b7fd4e6d78319953b0f83/rsa-4.8.tar.gz
 	tar -xzf rsa-4.8.tar.gz
-	$(shell cd rsa-4.8/)
-	python3 setup.py install
+	#$(shell cd rsa-4.8/)
+	python3 rsa-4.8/setup.py install
 
 run:	
 	#export SIGER_PATH=$(shell pwd)
