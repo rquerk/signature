@@ -3,8 +3,8 @@ from service.lib.client_list import ClientList
 from service.lib.establish_connection import ServerSocketConnection
 from service.lib.send.sending import Transmitter
 from service.lib.service import Service
-
 from time import sleep
+
 
 if __name__ == "__main__":
     try:

@@ -58,7 +58,8 @@ if __name__ == "__main__":
     public = keys[0]
     private = keys[1]
 
-    home = os.environ['HOME']
+    public_key_file = os.environ['PUBLIC_KEY']
+    private_key_file = os.environ['PRIVATE_KEY']
 
-    write_to_file(fr"{home}/public_key_file", public.save_pkcs1(format="PEM"))
-    write_to_file(fr"{home}/private_key_file", private.save_pkcs1(format="PEM"))
+    write_to_file(fr"{public_key_file}", public.save_pkcs1(format="PEM"))
+    write_to_file(fr"{private_key_file}", private.save_pkcs1(format="PEM"))

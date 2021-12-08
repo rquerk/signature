@@ -1,18 +1,18 @@
 from socketserver import StreamRequestHandler
 from socketserver import TCPServer
-
+import os 
 
 class MyTCPHandler(StreamRequestHandler):
-
+    
     def handle(self):
-        with open(r"/home/levi/public_key_file", "br") as pub_key_file:
+        with open(fr"{os.environ['PUBLIC_KEY']}", "br") as pub_key_file:
             content = pub_key_file.read()
         # self.wfile is a file-like object used to write to the client
         self.wfile.write(content)
         
         
 if __name__ == "__main__":
-    HOST, PORT = "localhost", 9998
+    HOST, PORT = "localhost", 5422
     
     try:
         with TCPServer((HOST, PORT), MyTCPHandler) as server:

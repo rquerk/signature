@@ -4,6 +4,7 @@ from service.src.I_service import ABService
 from service.lib.I_sending import ABTransmitter
 from service.lib.exceptions.exception_handling import handle_exception_and_exit
 import service.lib.sign.cryptic as cry
+import os
 
 
 class Service(ABService):
@@ -27,7 +28,8 @@ class Service(ABService):
 
     def do_and_send_signature(self, msg: bytes):
         """first sending the message then sending the closing bytes"""
-        private_key_file = r"/home/levi/private_key_file"
+        home = os.environ['HOME']
+        private_key_file = fr"{home}/private_key_file"
         pri = cry.read_key_from_file(private_key_file)
         signature = cry.sign(msg, pri)
         self.transmit.send_bytes_to_socket(signature)
