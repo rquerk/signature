@@ -28,8 +28,8 @@ class Service(ABService):
 
     def do_and_send_signature(self, msg: bytes):
         """first sending the message then sending the closing bytes"""
-        home = os.environ['HOME']
-        private_key_file = fr"{home}/private_key_file"
+        key = os.environ['PRIVATE_KEY']
+        private_key_file = fr"{key}"
         pri = cry.read_key_from_file(private_key_file)
         signature = cry.sign(msg, pri)
         self.transmit.send_bytes_to_socket(signature)
