@@ -1,8 +1,7 @@
+import lib.selector as selector
+from lib.socket_wrapper import SocketWrap
 
-import service.lib.selector as selector
-from service.lib.socket_wrapper import SocketWrap
-
-from service.src.I_clients import ABClientList
+from src.I_clients import ABClientList
 
 
 class ClientList(ABClientList):

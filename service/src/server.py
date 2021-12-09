@@ -1,8 +1,8 @@
 """Module for the server socket setup and call to accept()"""
 
-from service.src.I_connection import ABConnection
-from service.src.I_clients import ABClientList
-from service.src.I_service import ABService
+from src.I_connection import ABConnection
+from src.I_clients import ABClientList
+from src.I_service import ABService
 
 
 class Server:

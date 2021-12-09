@@ -1,7 +1,7 @@
 """Module to handle the select call"""
 
 import select
-import service.lib.exceptions.exception_handling as exc
+import lib.exceptions.exception_handling as exc
 
 
 def select_client_socket(client_sockets, mode: str = "rd"):

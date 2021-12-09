@@ -1,5 +1,6 @@
 .idea/
-rsa-4.8.tar.gz
+private_key_file
+public_key_file
 __pycache__/
 tests/__pycache__/
 service/backup/

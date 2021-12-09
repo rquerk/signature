@@ -7,8 +7,8 @@ PID_SIGN=-1
 PID_PUBLISH=-1
 
 start() {
-    PID_SIGN=$(python $SIGNER_PATH/service/main.py)
-    PID_PUBLISH=$(python $SIGNER_PATH/service/publish.py)
+    PID_SIGN=$(python $SIGNER_PATH/main.py)
+    PID_PUBLISH=$(python $SIGNER_PATH/publish.py)
 }
 
 stop() {

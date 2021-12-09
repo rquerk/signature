@@ -1,8 +1,8 @@
-from service.src.server import Server
-from service.lib.client_list import ClientList
-from service.lib.establish_connection import ServerSocketConnection
-from service.lib.send.sending import Transmitter
-from service.lib.service import Service
+from src.server import Server
+from lib.client_list import ClientList
+from lib.establish_connection import ServerSocketConnection
+from lib.send.sending import Transmitter
+from lib.service import Service
 from time import sleep
 
 
