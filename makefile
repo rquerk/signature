@@ -7,7 +7,7 @@ path:
 	
 install:
 	# read exported variables
-	source /root/.bashrc
+	#source /root/.bashrc
 	# get the dependency
 	wget https://files.pythonhosted.org/packages/8c/ee/4022542e0fed77dd6ddade38e1e4dea3299f873b7fd4e6d78319953b0f83/rsa-4.8.tar.gz
 	tar -xzf rsa-4.8.tar.gz
@@ -16,12 +16,13 @@ install:
 	sudo python3 rsa/setup.py install
 	# setup the signer as service
 	sudo cp signer.service /etc/systemd/system/
+	sudo cp publish.service /etc/systemd/system/
 	sudo systemctl daemon-reload
 	sudo systemctl enable signer
 	# create a keypair
 	python3 $(SIGNER_PATH)/lib/sign/cryptic.py
 run:	
-	source /root/.bashrc
+	#source /root/.bashrc
 	if [ ! $(SIGNER_PATH) ]; then
 		export PYTHONPATH=$(shell pwd)
 		export SIGNER_PATH=$(shell pwd)/service
