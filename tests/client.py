@@ -1,14 +1,14 @@
 import socket
 import sys
-
+import rsa
 import client_lib as service
 
 
 host = "localhost"
-port = 5421
 
 
-def new_socket():
+
+def new_socket(port):
     soc = service.socket_create()
     remote_ip = socket.gethostbyname(host)
     soc.connect((remote_ip, port))
@@ -19,7 +19,7 @@ def read_input():
     
 def send_input_to_server(soc):
     request = read_input()
-    service.send_bytes_to_socket(soc, request.encode(service.encoding_type))
+    service.send_bytes_to_socket(soc, request.encode())
     service.send_bytes_to_socket(soc, service.close_bytes)
 
 def receive_response(soc):
@@ -28,21 +28,62 @@ def receive_response(soc):
 def close_socket(soc):
     soc.shutdown(socket.SHUT_RDWR)
     soc.close()
-    
-if __name__ == "__main__":
-    
-    soc = new_socket()
+
+def test_receives_a_key():
+    publish_port = 5422
+    soc = new_socket(publish_port)
+    key = receive_response(soc)
+    print(key.decode())
+    return key
+
+def test_same_input_results_to_same_output():
+    signer_port = 5421
+    soc = new_socket(signer_port)
     send_input_to_server(soc)
     response = receive_response(soc)
     close_socket(soc)
     
-    soc2 = new_socket()
+    soc2 = new_socket(signer_port)
     send_input_to_server(soc2)
     response2 = receive_response(soc2)
     close_socket(soc2)
     
     if response != response2:
+        print("ERROR: Not The Same Server Output by same Input")
         exit(-1)
-        
-    print(fr"{response, response2}", file=sys.stdout)
-    # .decode("utf_8", errors="ignore")
+    else:
+        print("OK: Same Output by same Input")
+        print(f"{response}", file=sys.stdout)
+    
+    return response
+   
+def decrypt_with_public_key(encrypted_msg, public_key) -> bytes:
+    decrypted_msg = rsa.decrypt(encrypted_msg, public_key)
+    return decrypted_msg
+   
+if __name__ == "__main__":
+    
+    signature = test_same_input_results_to_same_output()
+    key = test_receives_a_key()
+    
+    #pem_prefix = b'-----BEGIN RSA PUBLIC KEY-----\n'
+    #pem_suffix = b'\n-----END RSA PUBLIC KEY-----'
+    #pem_key = pem_prefix + key + pem_suffix
+    #print (pem_key)
+    rsa_key = rsa.PublicKey.load_pkcs1(key)
+    try:
+        rsa.verify(sys.argv[1].encode(), signature, rsa_key)
+        print("verification succeeded")
+    except VerificationError:
+        print("verification failed")
+        exit(-1)
+
+    
+    
+    
+    
+    
+    
+    
+    
+    

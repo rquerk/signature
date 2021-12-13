@@ -2,14 +2,9 @@ import socket
 import sys
 import traceback
 
-host: str = ""
-port: int = 5421
-
-connection_queue_size: int = 2
 buffer_size: int = 512
 message_length: int = 1024
 
-encoding_type: str = "utf-8"
 close_bytes: bytes = b"\r\n"
 
 
