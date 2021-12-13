@@ -11,7 +11,7 @@ soc = service.socket_create()
 remote_ip = socket.gethostbyname(host)
 soc.connect((remote_ip, port))
 
-request = input()
+request = str(sys.argv[1])
 service.send_bytes_to_socket(soc, request.encode(service.encoding_type))
 service.send_bytes_to_socket(soc, service.close_bytes)
 
