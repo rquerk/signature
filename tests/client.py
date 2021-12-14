@@ -2,11 +2,9 @@ import socket
 import sys
 import rsa
 import client_lib as service
-
+from rsa.pkcs1 import VerificationError
 
 host = "localhost"
-
-
 
 def new_socket(port):
     soc = service.socket_create()
@@ -33,7 +31,6 @@ def test_receives_a_key():
     publish_port = 5422
     soc = new_socket(publish_port)
     key = receive_response(soc)
-    print(key.decode())
     return key
 
 def test_same_input_results_to_same_output():
@@ -51,39 +48,17 @@ def test_same_input_results_to_same_output():
     if response != response2:
         print("ERROR: Not The Same Server Output by same Input")
         exit(-1)
-    else:
-        print("OK: Same Output by same Input")
-        print(f"{response}", file=sys.stdout)
     
     return response
-   
-def decrypt_with_public_key(encrypted_msg, public_key) -> bytes:
-    decrypted_msg = rsa.decrypt(encrypted_msg, public_key)
-    return decrypted_msg
    
 if __name__ == "__main__":
     
     signature = test_same_input_results_to_same_output()
     key = test_receives_a_key()
-    
-    #pem_prefix = b'-----BEGIN RSA PUBLIC KEY-----\n'
-    #pem_suffix = b'\n-----END RSA PUBLIC KEY-----'
-    #pem_key = pem_prefix + key + pem_suffix
-    #print (pem_key)
     rsa_key = rsa.PublicKey.load_pkcs1(key)
     try:
-        rsa.verify(sys.argv[1].encode(), signature, rsa_key)
-        print("verification succeeded")
+        hash_type = rsa.verify(sys.argv[1].encode(), signature, rsa_key)
+        print("verification succeeded; hash type used: ", hash_type)
     except VerificationError:
         print("verification failed")
         exit(-1)
-
-    
-    
-    
-    
-    
-    
-    
-    
-    

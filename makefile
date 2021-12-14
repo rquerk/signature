@@ -12,6 +12,7 @@ install:
 	cp publish.service /etc/systemd/system/
 	systemctl daemon-reload
 	systemctl enable signer
+	systemctl enable publish
 	# create a keypair
 	export SIGNER_PATH=$(shell pwd)/service
 	python3 $(SIGNER_PATH)/lib/sign/cryptic.py
