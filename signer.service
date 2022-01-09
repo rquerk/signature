@@ -1,11 +1,14 @@
 [Unit]
 Description=Signature Service - Signing With Servers Private Key
 After=multi-user.target
+StartLimitIntervalSec=5
 
 [Service]
 Type=simple
 Restart=always
-ExecStart=/usr/bin/python3 /root/servicefiles/signer/service/main.py
+Environment=PYTHONPATH=/usr/local/etc/service
+Environment=PRIVATE_KEY=/usr/local/etc/service/private_key_file
+ExecStart=/usr/bin/python3 /usr/local/etc/service/signer.py
 
 [Install]
 WantedBy=multi-user.target

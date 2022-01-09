@@ -1,11 +1,13 @@
 [Unit]
 Description=Publishing Service - Sends The Servers Public Key
 After=multi-user.target
+StartLimitIntervalSec=5
 
 [Service]
 Type=simple
 Restart=always
-ExecStart=/usr/bin/python3 /root/servicefiles/signer/service/publish.py
+Environment=PUBLIC_KEY=/usr/local/etc/service/public_key_file
+ExecStart=/usr/bin/python3 /usr/local/etc/service/publish.py
 
 [Install]
 WantedBy=multi-user.target

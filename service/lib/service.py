@@ -3,7 +3,7 @@
 from src.I_service import ABService
 from lib.I_sending import ABTransmitter
 from lib.exceptions.exception_handling import handle_exception_and_exit
-import lib.sign.cryptic as cry
+import lib.sign.cryptic as cryptic
 import os
 
 
@@ -21,17 +21,16 @@ class Service(ABService):
         self.close_connection_and_del_client_elem(clients)
 
     def sign_client_request_and_send_back(self):
-        """receive some data, digest it and send it back"""
+        """receive some data, sign it and send it back"""
         client_request: bytes = self.transmit.receive_bytes_from_socket()
         if client_request != b"":
             self.do_and_send_signature(client_request)
 
     def do_and_send_signature(self, msg: bytes):
-        """first sending the message then sending the closing bytes"""
         key = os.environ['PRIVATE_KEY']
         private_key_file = fr"{key}"
-        pri = cry.read_key_from_file(private_key_file)
-        signature = cry.sign(msg, pri)
+        pri = cryptic.read_key_from_file(private_key_file)
+        signature = cryptic.sign(msg, pri)
         self.transmit.send_bytes_to_socket(signature)
         self.transmit.send_bytes_to_socket(self.transmit.close_bytes)
 

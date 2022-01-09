@@ -7,7 +7,6 @@ class MyTCPHandler(StreamRequestHandler):
     def handle(self):
         with open(fr"{os.environ['PUBLIC_KEY']}", "br") as pub_key_file:
             content = pub_key_file.read()
-        # self.wfile is a file-like object used to write to the client
         self.wfile.write(content)
         
         
