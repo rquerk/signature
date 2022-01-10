@@ -11,7 +11,7 @@ class MyTCPHandler(StreamRequestHandler):
         
         
 if __name__ == "__main__":
-    HOST, PORT = "localhost", 5422
+    HOST, PORT = "0.0.0.0", 5422
     
     try:
         with TCPServer((HOST, PORT), MyTCPHandler) as server:

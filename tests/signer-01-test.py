@@ -47,7 +47,7 @@ def test_same_input_results_to_same_output():
     
     if response != response2:
         print("ERROR: Not The Same Server Output by same Input")
-        exit(-1)
+        exit(3)
     
     return response
    
@@ -59,6 +59,7 @@ if __name__ == "__main__":
     try:
         hash_type = rsa.verify(sys.argv[1].encode(), signature, rsa_key)
         print("verification succeeded; hash type used: ", hash_type)
+        exit(1)
     except VerificationError:
         print("verification failed")
-        exit(-1)
+        exit(3)

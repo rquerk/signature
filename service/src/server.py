@@ -11,7 +11,7 @@ class Server:
 
     def __init__(self, server_socket, clients):
         self.server_socket = server_socket
-        self.server_socket.set_host_port("", 5421)
+        self.server_socket.set_host_port("localhost", 5421)
         self.clients = clients
 
     def start(self):
