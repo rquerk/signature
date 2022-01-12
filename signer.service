@@ -5,7 +5,10 @@ StartLimitIntervalSec=30
 
 [Service]
 Type=simple
+User=rdsuser
+Group=servicegroup
 Restart=on-failure
+RestartSec=30
 Environment=PYTHONPATH=/usr/local/etc/service
 Environment=PRIVATE_KEY=/usr/local/etc/private_key_file
 ExecStart=/usr/bin/python3 /usr/local/etc/service/signer.py

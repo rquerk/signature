@@ -3,6 +3,7 @@ import sys
 import rsa
 import client_lib as service
 from rsa.pkcs1 import VerificationError
+import traceback
 
 host = "localhost"
 
@@ -13,7 +14,9 @@ def new_socket(port):
     return soc
 
 def read_input():
-    return str(sys.argv[1])
+    # sys.argv[1]
+    # read lines from a file
+    return "A generic String that shall be signed to test the Service for basic functionality"
     
 def send_input_to_server(soc):
     request = read_input()
@@ -31,6 +34,9 @@ def test_receives_a_key():
     publish_port = 5422
     soc = new_socket(publish_port)
     key = receive_response(soc)
+    if len(key) < 64:
+        print("ERROR: Key returned by publish is too short")
+        exit(3)
     return key
 
 def test_same_input_results_to_same_output():
@@ -46,20 +52,26 @@ def test_same_input_results_to_same_output():
     close_socket(soc2)
     
     if response != response2:
-        print("ERROR: Not The Same Server Output by same Input")
+        print("ERROR - SIGNER SERVICE: Server responds with diffrent aswers for same input")
         exit(3)
     
     return response
    
 if __name__ == "__main__":
     
-    signature = test_same_input_results_to_same_output()
-    key = test_receives_a_key()
-    rsa_key = rsa.PublicKey.load_pkcs1(key)
     try:
-        hash_type = rsa.verify(sys.argv[1].encode(), signature, rsa_key)
-        print("verification succeeded; hash type used: ", hash_type)
-        exit(1)
-    except VerificationError:
-        print("verification failed")
+        signature = test_same_input_results_to_same_output()
+        key = test_receives_a_key()
+        rsa_key = rsa.PublicKey.load_pkcs1(key)
+        
+        try:
+            hash_type = rsa.verify(sys.argv[1].encode(), signature, rsa_key)
+            print("OK: Verification succeeded; hash type used: ", hash_type)
+            exit(1)
+        except VerificationError:
+            print("ERROR: Verification failed. RSA's verify function exits with 'VerificationError'")
+            exit(3)
+    except Exception:
+        print("service is broken")
+        traceback.print_exc()  # file=sys.stdout
         exit(3)
