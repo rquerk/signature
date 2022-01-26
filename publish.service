@@ -5,6 +5,8 @@ StartLimitIntervalSec=30
 
 [Service]
 Type=simple
+User=homer
+Group=users
 Restart=on-failure
 Environment=PUBLIC_KEY=/usr/local/etc/public_key_file
 ExecStart=/usr/bin/python3 /usr/local/etc/service/publish.py

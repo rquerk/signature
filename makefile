@@ -18,12 +18,10 @@ install:
 	python3 $(PATH)/service/lib/sign/cryptic.py
 	
 run:
-	
 	systemctl start signer
 	systemctl start publish
 	
-clean:
-	
+clean:	
 	rm -rf $(PATH)/service/
 	#$(shell sed -i /$export/d $(HOME)/bashrc)
 	systemctl disable signer

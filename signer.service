@@ -5,8 +5,8 @@ StartLimitIntervalSec=30
 
 [Service]
 Type=simple
-User=rdsuser
-Group=servicegroup
+User=homer
+Group=users
 Restart=on-failure
 RestartSec=30
 Environment=PYTHONPATH=/usr/local/etc/service
