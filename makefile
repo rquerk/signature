@@ -2,8 +2,7 @@
 PATH=/usr/local/etc
 
 deps:
-	apt install pip
-	pip install rsa
+	apt install python3-rsa
 	
 install:
 	$(shell cp -r service/ $(PATH))

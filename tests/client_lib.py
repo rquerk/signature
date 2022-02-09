@@ -7,13 +7,41 @@ message_length: int = 1024
 
 close_bytes: bytes = b"\r\n"
 
+host = "localhost"
 
-def socket_create() -> socket:
+
+def new_connected_socket(port):
+    soc = socket_create()
+    remote_ip = socket.gethostbyname(host)
+    try:
+        soc.connect((remote_ip, port))
+    except ConnectionRefusedError:
+        print("Can not Connect - Connection Refused. Server might be Down")
+        exit(3)
+    return soc
+
+
+def socket_create():
     """This function calls the socket() and setsockopt() methods;
     socket is set to be reusable."""
     socket_fd = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     socket_fd.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     return socket_fd
+
+
+def read_input():
+    # sys.argv[1]
+    # read lines from a file
+    test_input = "A generic string that shall be signed to test the service for basic functionality"
+    return test_input
+
+
+def send_input_to_server(soc, message: str = None):
+    if message is None or message == "":
+        message = read_input()
+
+    send_bytes_to_socket(soc, message.encode())
+    send_bytes_to_socket(soc, close_bytes)
 
 
 def send_bytes_to_socket(c_socket: socket, msg: bytes) -> int:
@@ -45,6 +73,11 @@ def receive_bytes_from_socket(c_socket: socket) -> bytes:
             request = request[:-len(close_bytes)]
             break
     return bytes(request)
+
+
+def close_socket(soc):
+    soc.shutdown(socket.SHUT_RDWR)
+    soc.close()
 
 
 def handle_exception_and_exit(e: Exception, exitcode: int = 420, error_message: str = ""):
