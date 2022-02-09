@@ -18,8 +18,8 @@ install:
 	$(shell export PRIVATE_KEY=$(PATH)/private_key_file && export PUBLIC_KEY=$(PATH)/public_key_file && /bin/python3 $(PATH)/service/lib/sign/cryptic.py)
 	
 run:
-	systemctl start signer
-	systemctl start publish
+	$(shell systemctl start signer)
+	$(shell systemctl start publish)
 	
 clean:	
 	rm -rf $(PATH)/service/
