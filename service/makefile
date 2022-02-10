@@ -7,7 +7,7 @@ deps:
 install:
 	mkdir $(SERVICEPATH)/service 
 	# copy service directory
-	shell cp -r * $(SERVICEPATH)/service
+	cp -r * $(SERVICEPATH)/service
 	# copy service files
 	cp signer.service /etc/systemd/system/
 	cp publish.service /etc/systemd/system/
