@@ -1,8 +1,8 @@
 .idea/
+tests/
 private_key_file
 public_key_file
 __pycache__/
-tests/__pycache__/
 service/backup/
 service/__pycache__/
 service/src/__pycache__/
